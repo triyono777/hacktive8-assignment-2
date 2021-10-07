@@ -71,9 +71,8 @@ func GetOrders(c *gin.Context) {
 		}
 	}
 
-//err := db.Debug().Find(&Orders).Error
-	err:= db.Preload("Items").Find(&Orders).Error
-
+	//err := db.Debug().Find(&Orders).Error
+	err := db.Preload("Items").Find(&Orders).Error
 
 	if err != nil {
 		fmt.Println("error", err)
@@ -119,16 +118,8 @@ func UpdateOrders(c *gin.Context) {
 		}
 	}
 	//var dataItem models.Item
-	err := db.Debug().Model(&Orders).Where("order_id = ?", orderId).Updates(models.Orders{
-		CustomerName: Orders.CustomerName,
-		OrderedAt:    Orders.OrderedAt,
-		//Items: []models.Item{{
-		//	ItemCode:    dataItem.ItemCode,
-		//	Description: dataItem.Description,
-		//	Quantity:    dataItem.Quantity,
-		//}},
-	}).Error
-
+	err := db.Where("order_id = ?", orderId).Preload("Items").First(&Orders).Error
+	//db.Where("customer_id = ?", param["id"]).Preload("Contacts").First(&customer)
 	if err != nil {
 		fmt.Println("error", err)
 		c.JSON(http.StatusBadRequest, gin.H{
