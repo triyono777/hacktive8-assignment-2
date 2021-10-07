@@ -139,25 +139,26 @@ func UpdateOrders(c *gin.Context) {
 func DeleteOrder(c *gin.Context) {
 	db := database.GetDB()
 	contentType := helpers.GetContentType(c)
-	Order := models.Orders{}
-	OrderId, _ := strconv.Atoi(c.Param("orderId"))
+	Orders := models.Orders{}
+	orderId, _ := strconv.Atoi(c.Param("orderId"))
 
 	if contentType == appJSON {
-		err := c.ShouldBindJSON(&Order)
+		err := c.ShouldBindJSON(&Orders)
 		if err != nil {
 			panic(err.Error())
 			return
 		}
 	} else {
-		err := c.ShouldBind(&Order)
+		err := c.ShouldBind(&Orders)
 		if err != nil {
 			panic(err.Error())
 			return
 		}
 	}
-	Order.OrderId = uint(OrderId)
+	Orders.OrderId = uint(orderId)
 
-	err := db.Debug().Model(&Order).Where("order_id = ?", OrderId).Delete(&Order, OrderId).Error
+	err := db.Debug().Model(&Orders).Where("order_id = ?", orderId).Delete(&Orders, orderId).Error
+	//err := db.Where("order_id = ?", orderId).Association("Items").Delete(&Orders).Error()
 
 	if err != nil {
 		fmt.Println("error", err)
