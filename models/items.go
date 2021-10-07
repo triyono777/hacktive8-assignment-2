@@ -5,18 +5,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type Items struct {
-	ItemId uint `gorm:"primaryKey" json:"item_id"`
-	ItemCode string `json:"item_code"`
+type Item struct {
+	ItemId      uint   `gorm:"primaryKey" json:"item_id"`
+	ItemCode    string `json:"item_code"`
 	Description string `json:"description"`
-	OrderId uint `json:"order_id"`
+	Quantity    uint   `json:"quantity"`
+	OrderId     uint   `json:"order_id"`
 
 }
 
 
 
-func (items *Items) BeforeCreate(tx *gorm.DB) (err error) {
-	_, errCreate := govalidator.ValidateStruct(items)
+func (item *Item) BeforeCreate(tx *gorm.DB) (err error) {
+	_, errCreate := govalidator.ValidateStruct(item)
 
 	if errCreate != nil {
 		err = errCreate
@@ -26,8 +27,8 @@ func (items *Items) BeforeCreate(tx *gorm.DB) (err error) {
 	err = nil
 	return
 }
-func (items *Items) BeforeUpdate(tx *gorm.DB) (err error) {
-	_, errCreate := govalidator.ValidateStruct(items)
+func (item *Item) BeforeUpdate(tx *gorm.DB) (err error) {
+	_, errCreate := govalidator.ValidateStruct(item)
 
 	if errCreate != nil {
 		err = errCreate

@@ -26,7 +26,7 @@ func StartDB() {
 		log.Fatal("error connecting", err)
 	}
 	fmt.Println("sukses koneksi ke db")
-	err = db.Debug().AutoMigrate(models.Items{}, models.Orders{})
+	err = db.Debug().AutoMigrate( models.Orders{}, models.Item{})
 	if err != nil {
 		return
 	}
