@@ -71,10 +71,9 @@ func GetOrders(c *gin.Context) {
 		}
 	}
 
-	//err := db.Debug().Model(models.Orders{}).Select("orders.customer_name, items.item_code") .Joins("left join items on items.order_id = orders.order.id") .Error
-	err := db.Debug().Find(&Orders).Error
-	//err := db.Joins("orders").Joins("items").Find(&Orders) .Error
-	//err:=db.Joins("orders", db.Where(&Item.ItemId==&Order.OrderId)).Find(&Orders).Error
+//err := db.Debug().Find(&Orders).Error
+	err:= db.Preload("Items").Find(&Orders).Error
+
 
 	if err != nil {
 		fmt.Println("error", err)
